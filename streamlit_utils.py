@@ -241,6 +241,18 @@ def rules_computation():
                 # st.write(map_transitions_events)
                 # st.write('net')
                 # st.write(st.session_state['net'])
+                print('\n\n##############')
+                print(type(st.session_state['net']))
+                transitions = list(st.session_state['net'].transitions)
+                idx = 0
+                for i in range(len(transitions)):
+                    if transitions[i].label is None:
+                        transitions[i].label = transitions[i].name
+                        idx += 1
+                    
+                print('\n\n##############')
+                st.session_state['net'] = pm4py.objects.petri_net.obj.PetriNet(name=st.session_state['net'].name, places=st.session_state['net'].places, transitions=set(transitions), arcs=st.session_state['net'].arcs, properties=st.session_state['net'].properties)
+                print(st.session_state['net'])
                 st.session_state['foo_diagram'] = pm4py.convert_to_bpmn(
                     st.session_state['net'],
                     st.session_state['im'],
