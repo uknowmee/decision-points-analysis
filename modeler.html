@@ -226,6 +226,43 @@
                     }
                   }
                 });
+                const elementRegistry = window.cli_modeler.get('elementRegistry');
+                const modeling = window.cli_modeler.get('modeling');
+
+                // Delete tasks with the name "tauSplit_1"
+                elementRegistry.filter((el) => el.businessObject && el.businessObject.name === "tauSplit_1").forEach((el) => {
+                  const incoming = el.incoming || [];
+                  const outgoing = el.outgoing || [];
+                
+                  // Save source and target elements
+                  const sourceElement = incoming.length > 0 ? incoming[0].source : null;
+                  const targetElement = outgoing.length > 0 ? outgoing[0].target : null;
+
+                  const incomingLabel = rules['tauSplit_1'];
+                
+                  // Delete incoming arcs
+                  incoming.forEach((inc) => {
+                    modeling.removeElements([inc]);
+                  });
+                
+                  // Delete outgoing arcs
+                  outgoing.forEach((out) => {
+                    modeling.removeElements([out]);
+                  });
+                
+                  // Delete the task element
+                  modeling.removeElements([el]);
+                
+                  // Create new arc to replace deleted arcs
+                  if (sourceElement && targetElement) {
+                    const newArc = modeling.connect(sourceElement, targetElement, {
+                      type: 'bpmn:SequenceFlow'
+                    });
+                
+                    // Set label of the new arc
+                    modeling.updateLabel(newArc, incomingLabel);
+                  }
+                });
                 console.log(data)
               })
           }
