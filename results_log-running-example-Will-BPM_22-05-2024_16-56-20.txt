@@ -1,0 +1,24 @@
+p_3 - SUCCESS
+Dataset target values counts:
+ target
+c3844c99-1095-4133-8a7c-57194e7586b4    64
+fd27f1f7-7829-45f5-aed9-3ad80ab2e759    36
+Name: count, dtype: int64
+Accuracy: 0.71
+F1 score: 0.7128712871287127
+Rules:
+C: policyType = premium
+B: policyType = normal
+
+p_5 - SUCCESS
+Dataset target values counts:
+ target
+8e431bae-5615-4391-8aad-3f905d280503    49
+tauSplit_1                              49
+Name: count, dtype: int64
+Accuracy: 1.0
+F1 score: 1.0
+Rules:
+F: status = rejected
+tauSplit_1: status = approved
+

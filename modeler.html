@@ -230,15 +230,18 @@
                 const modeling = window.cli_modeler.get('modeling');
 
                 // Delete tasks with the name "tauSplit_1"
-                elementRegistry.filter((el) => el.businessObject && el.businessObject.name === "tauSplit_1").forEach((el) => {
+                elementRegistry.filter((el) => el.businessObject && el.businessObject.name && 
+                (el.businessObject.name.includes("tau") || el.businessObject.name.includes("skip") || el.businessObject.name.includes("init"))).forEach((el) => {
+                  const elementName = el.businessObject.name;
                   const incoming = el.incoming || [];
                   const outgoing = el.outgoing || [];
                 
                   // Save source and target elements
-                  const sourceElement = incoming.length > 0 ? incoming[0].source : null;
-                  const targetElement = outgoing.length > 0 ? outgoing[0].target : null;
+                  const sourceElement = incoming[0].source;
+                  const targetElement = outgoing[0].target;
 
-                  const incomingLabel = rules['tauSplit_1'];
+                  // const incomingLabel = rules['tauSplit_1'];
+                  const incomingLabel = rules[elementName] !== undefined ? rules[elementName] : '';
                 
                   // Delete incoming arcs
                   incoming.forEach((inc) => {
@@ -267,6 +270,9 @@
               })
           }
         ).then(() => {
+          // Get the element registry and modeling components from the modeler
+          
+
           var result = window.cli_modeler.saveXML({format: true});
           result.then(function (res) {
             console.log('result');
